@@ -43,6 +43,7 @@ export function CompanyInfoStep() {
     email: companyInfo?.email ?? '',
     legalRepresentative: companyInfo?.legalRepresentative ?? '',
     ruc: companyInfo?.ruc ?? '',
+    acceptInfo: companyInfo?.acceptInfo ?? false,
   });
 
   const [errors, setErrors] = useState<{
@@ -286,6 +287,20 @@ export function CompanyInfoStep() {
                 <SelectItem value="Perú">Perú</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Acepta información */}
+          <div className="flex items-start gap-3 p-3 rounded-lg border bg-muted/20">
+            <input
+              id="acceptInfo"
+              type="checkbox"
+              className="mt-1 h-4.5 w-4.5 rounded border-gray-300 text-primary accent-blue-600 cursor-pointer"
+              checked={formData.acceptInfo}
+              onChange={(e) => setFormData({ ...formData, acceptInfo: e.target.checked })}
+            />
+            <Label htmlFor="acceptInfo" className="text-sm font-normal text-muted-foreground cursor-pointer leading-relaxed select-none">
+              Acepto recibir información relevante sobre exportación, tendencias y oportunidades comerciales específicas para mi sector e industria.
+            </Label>
           </div>
 
           {/* Navigation */}

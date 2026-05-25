@@ -57,6 +57,7 @@ export interface CompanyInfo {
   email?: string;
   legalRepresentative?: string;
   ruc?: string;
+  acceptInfo?: boolean;
 }
 
 export interface CategoryScore {
