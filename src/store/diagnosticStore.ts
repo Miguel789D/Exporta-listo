@@ -145,7 +145,12 @@ export const useDiagnosticStore = create<DiagnosticState>()(
         if (currentStep === 0) {
           return companyInfo !== null &&
                  companyInfo.sector !== '' &&
-                 companyInfo.size !== undefined;
+                 companyInfo.size !== undefined &&
+                 (companyInfo.name?.trim() ?? '') !== '' &&
+                 (companyInfo.ruc?.trim() ?? '') !== '' &&
+                 (companyInfo.legalRepresentative?.trim() ?? '') !== '' &&
+                 (companyInfo.email?.trim() ?? '') !== '' &&
+                 (companyInfo.phone?.trim() ?? '') !== '';
         }
 
         // Pasos de categorías: verificar que todas las preguntas de la categoría estén respondidas

@@ -46,8 +46,10 @@ export function CompanyInfoStep() {
   });
 
   const [errors, setErrors] = useState<{
+    name?: string;
     sector?: string;
     ruc?: string;
+    legalRepresentative?: string;
     email?: string;
     phone?: string;
   }>({});
@@ -57,23 +59,39 @@ export function CompanyInfoStep() {
 
     const newErrors: typeof errors = {};
 
+    // Validación de nombre
+    if (!formData.name?.trim()) {
+      newErrors.name = 'El nombre de la empresa es obligatorio';
+    }
+
     // Validación de sector
     if (!formData.sector) {
       newErrors.sector = 'Selecciona un sector';
     }
 
-    // Validación de RUC (si se ingresa, debe tener 11 dígitos)
-    if (formData.ruc && formData.ruc.length !== 11) {
+    // Validación de RUC
+    if (!formData.ruc) {
+      newErrors.ruc = 'El RUC es obligatorio';
+    } else if (formData.ruc.length !== 11) {
       newErrors.ruc = 'El RUC debe tener exactamente 11 dígitos';
     }
 
+    // Validación de representante legal
+    if (!formData.legalRepresentative?.trim()) {
+      newErrors.legalRepresentative = 'El representante legal es obligatorio';
+    }
+
     // Validación de email
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (!formData.email) {
+      newErrors.email = 'El correo electrónico es obligatorio';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Introduce un correo electrónico válido';
     }
 
     // Validación de celular
-    if (formData.phone && formData.phone.length < 9) {
+    if (!formData.phone) {
+      newErrors.phone = 'El número de celular es obligatorio';
+    } else if (formData.phone.length < 9) {
       newErrors.phone = 'Introduce un número de celular válido';
     }
 
@@ -86,7 +104,13 @@ export function CompanyInfoStep() {
     nextStep();
   };
 
-  const isValid = formData.sector !== '';
+  const isValid =
+    (formData.name?.trim() ?? '') !== '' &&
+    formData.sector !== '' &&
+    (formData.ruc?.trim() ?? '') !== '' &&
+    (formData.legalRepresentative?.trim() ?? '') !== '' &&
+    (formData.email?.trim() ?? '') !== '' &&
+    (formData.phone?.trim() ?? '') !== '';
 
   return (
     <Card>
@@ -94,25 +118,31 @@ export function CompanyInfoStep() {
         <CardTitle>Cuéntanos sobre tu empresa</CardTitle>
         <CardDescription>
           Esta información nos ayuda a personalizar las recomendaciones.
-          Solo el sector es obligatorio.
+          Todos los campos son obligatorios.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Nombre (opcional) */}
+          {/* Nombre */}
           <div className="space-y-2">
-            <Label htmlFor="name">Nombre de la empresa (opcional)</Label>
+            <Label htmlFor="name">Nombre de la empresa *</Label>
             <Input
               id="name"
               placeholder="Ej: Exportaciones ABC S.A.C."
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) => {
+                setFormData({ ...formData, name: e.target.value });
+                if (errors.name) setErrors({ ...errors, name: undefined });
+              }}
             />
+            {errors.name && (
+              <p className="text-sm text-destructive">{errors.name}</p>
+            )}
           </div>
 
-          {/* RUC (opcional) */}
+          {/* RUC */}
           <div className="space-y-2">
-            <Label htmlFor="ruc">RUC de la empresa (opcional)</Label>
+            <Label htmlFor="ruc">RUC de la empresa *</Label>
             <Input
               id="ruc"
               placeholder="Ej: 20123456789"
@@ -129,20 +159,26 @@ export function CompanyInfoStep() {
             )}
           </div>
 
-          {/* Representante Legal (opcional) */}
+          {/* Representante Legal */}
           <div className="space-y-2">
-            <Label htmlFor="legalRepresentative">Representante legal de la entidad (opcional)</Label>
+            <Label htmlFor="legalRepresentative">Representante legal de la entidad *</Label>
             <Input
               id="legalRepresentative"
               placeholder="Ej: Juan Pérez"
               value={formData.legalRepresentative}
-              onChange={(e) => setFormData({ ...formData, legalRepresentative: e.target.value })}
+              onChange={(e) => {
+                setFormData({ ...formData, legalRepresentative: e.target.value });
+                if (errors.legalRepresentative) setErrors({ ...errors, legalRepresentative: undefined });
+              }}
             />
+            {errors.legalRepresentative && (
+              <p className="text-sm text-destructive">{errors.legalRepresentative}</p>
+            )}
           </div>
 
-          {/* Correo Electrónico (opcional) */}
+          {/* Correo Electrónico */}
           <div className="space-y-2">
-            <Label htmlFor="email">Correo electrónico (opcional)</Label>
+            <Label htmlFor="email">Correo electrónico *</Label>
             <Input
               id="email"
               type="email"
@@ -158,9 +194,9 @@ export function CompanyInfoStep() {
             )}
           </div>
 
-          {/* Número de Celular (opcional) */}
+          {/* Número de Celular */}
           <div className="space-y-2">
-            <Label htmlFor="phone">Número de celular (opcional)</Label>
+            <Label htmlFor="phone">Número de celular *</Label>
             <Input
               id="phone"
               type="tel"
