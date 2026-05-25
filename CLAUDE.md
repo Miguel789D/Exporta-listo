@@ -8,10 +8,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
-All commands run from the `client/` directory:
+All commands run from the root directory:
 
 ```bash
-cd client
 npm run dev      # Start Vite dev server with HMR
 npm run build    # TypeScript compile + Vite production build
 npm run lint     # Run ESLint
