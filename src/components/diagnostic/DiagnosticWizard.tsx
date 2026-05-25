@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDiagnosticStore } from '@/store/diagnosticStore';
 import { CATEGORIES } from '@/data/categories';
 import { Stepper } from '@/components/ui/stepper';
@@ -7,6 +8,10 @@ import { Building2 } from 'lucide-react';
 
 export function DiagnosticWizard() {
   const { currentStep, getProgressPercentage } = useDiagnosticStore();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [currentStep]);
 
   const progress = getProgressPercentage();
 
