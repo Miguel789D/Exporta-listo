@@ -11,7 +11,7 @@ interface TrustIndicator {
 }
 
 const TRUST_INDICATORS: TrustIndicator[] = [
-    { id: 1, icon: Globe, label: '500+ empresas diagnosticadas' },
+    { id: 1, icon: Globe, label: '100+ empresas diagnosticadas' },
     { id: 2, icon: TrendingUp, label: '6 dimensiones evaluadas' },
     { id: 3, icon: CheckCircle, label: '100% gratuito' },
 ];
