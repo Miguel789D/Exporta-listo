@@ -49,6 +49,18 @@ export async function generatePDF(result: DiagnosticResult): Promise<void> {
   if (result.companyInfo.name) {
     addText(`Empresa: ${result.companyInfo.name}`, 14, 'bold');
   }
+  if (result.companyInfo.ruc) {
+    addText(`RUC: ${result.companyInfo.ruc}`, 11);
+  }
+  if (result.companyInfo.legalRepresentative) {
+    addText(`Representante Legal: ${result.companyInfo.legalRepresentative}`, 11);
+  }
+  if (result.companyInfo.email) {
+    addText(`Correo electrónico: ${result.companyInfo.email}`, 11);
+  }
+  if (result.companyInfo.phone) {
+    addText(`Celular/Teléfono: ${result.companyInfo.phone}`, 11);
+  }
   addText(`Sector: ${result.companyInfo.sector}`, 11);
   addText(`Fecha: ${new Date(result.completedAt).toLocaleDateString('es-PE')}`, 11);
   y += 5;

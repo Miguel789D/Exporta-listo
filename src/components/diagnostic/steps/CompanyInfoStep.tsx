@@ -39,16 +39,46 @@ export function CompanyInfoStep() {
     sector: companyInfo?.sector ?? '',
     size: companyInfo?.size ?? 'micro',
     country: companyInfo?.country ?? 'Perú',
+    phone: companyInfo?.phone ?? '',
+    email: companyInfo?.email ?? '',
+    legalRepresentative: companyInfo?.legalRepresentative ?? '',
+    ruc: companyInfo?.ruc ?? '',
   });
 
-  const [errors, setErrors] = useState<{ sector?: string }>({});
+  const [errors, setErrors] = useState<{
+    sector?: string;
+    ruc?: string;
+    email?: string;
+    phone?: string;
+  }>({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validación
+    const newErrors: typeof errors = {};
+
+    // Validación de sector
     if (!formData.sector) {
-      setErrors({ sector: 'Selecciona un sector' });
+      newErrors.sector = 'Selecciona un sector';
+    }
+
+    // Validación de RUC (si se ingresa, debe tener 11 dígitos)
+    if (formData.ruc && formData.ruc.length !== 11) {
+      newErrors.ruc = 'El RUC debe tener exactamente 11 dígitos';
+    }
+
+    // Validación de email
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Introduce un correo electrónico válido';
+    }
+
+    // Validación de celular
+    if (formData.phone && formData.phone.length < 9) {
+      newErrors.phone = 'Introduce un número de celular válido';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
@@ -78,6 +108,73 @@ export function CompanyInfoStep() {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
+          </div>
+
+          {/* RUC (opcional) */}
+          <div className="space-y-2">
+            <Label htmlFor="ruc">RUC de la empresa (opcional)</Label>
+            <Input
+              id="ruc"
+              placeholder="Ej: 20123456789"
+              maxLength={11}
+              value={formData.ruc}
+              onChange={(e) => {
+                const val = e.target.value.replace(/\D/g, ''); // Solo números
+                setFormData({ ...formData, ruc: val });
+                if (errors.ruc) setErrors({ ...errors, ruc: undefined });
+              }}
+            />
+            {errors.ruc && (
+              <p className="text-sm text-destructive">{errors.ruc}</p>
+            )}
+          </div>
+
+          {/* Representante Legal (opcional) */}
+          <div className="space-y-2">
+            <Label htmlFor="legalRepresentative">Representante legal de la entidad (opcional)</Label>
+            <Input
+              id="legalRepresentative"
+              placeholder="Ej: Juan Pérez"
+              value={formData.legalRepresentative}
+              onChange={(e) => setFormData({ ...formData, legalRepresentative: e.target.value })}
+            />
+          </div>
+
+          {/* Correo Electrónico (opcional) */}
+          <div className="space-y-2">
+            <Label htmlFor="email">Correo electrónico (opcional)</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Ej: representante@empresa.com"
+              value={formData.email}
+              onChange={(e) => {
+                setFormData({ ...formData, email: e.target.value });
+                if (errors.email) setErrors({ ...errors, email: undefined });
+              }}
+            />
+            {errors.email && (
+              <p className="text-sm text-destructive">{errors.email}</p>
+            )}
+          </div>
+
+          {/* Número de Celular (opcional) */}
+          <div className="space-y-2">
+            <Label htmlFor="phone">Número de celular (opcional)</Label>
+            <Input
+              id="phone"
+              type="tel"
+              placeholder="Ej: 987654321"
+              value={formData.phone}
+              onChange={(e) => {
+                const val = e.target.value.replace(/[^\d+ ]/g, ''); // Números, espacios o '+'
+                setFormData({ ...formData, phone: val });
+                if (errors.phone) setErrors({ ...errors, phone: undefined });
+              }}
+            />
+            {errors.phone && (
+              <p className="text-sm text-destructive">{errors.phone}</p>
+            )}
           </div>
 
           {/* Sector */}

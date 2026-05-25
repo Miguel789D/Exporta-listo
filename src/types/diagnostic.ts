@@ -53,6 +53,10 @@ export interface CompanyInfo {
   sector: string;
   size: 'micro' | 'small' | 'medium';
   country: string;
+  phone?: string;
+  email?: string;
+  legalRepresentative?: string;
+  ruc?: string;
 }
 
 export interface CategoryScore {

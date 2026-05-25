@@ -74,11 +74,28 @@ export function ResultsPage() {
           <h1 className="text-4xl md:text-5xl font-extrabold mb-3 gradient-text">
             Tu Diagnóstico de Export Readiness
           </h1>
-          {result.companyInfo.name && (
-            <p className="text-lg text-muted-foreground font-medium">
-              {result.companyInfo.name}
-            </p>
-          )}
+          <div className="mt-2 text-muted-foreground max-w-2xl mx-auto space-y-1">
+            {result.companyInfo.name && (
+              <p className="text-lg font-bold text-foreground">
+                {result.companyInfo.name}
+              </p>
+            )}
+            <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+              {result.companyInfo.ruc && (
+                <span><span className="font-semibold text-foreground">RUC:</span> {result.companyInfo.ruc}</span>
+              )}
+              {result.companyInfo.legalRepresentative && (
+                <span><span className="font-semibold text-foreground">Representante:</span> {result.companyInfo.legalRepresentative}</span>
+              )}
+              {result.companyInfo.email && (
+                <span><span className="font-semibold text-foreground">Correo:</span> {result.companyInfo.email}</span>
+              )}
+              {result.companyInfo.phone && (
+                <span><span className="font-semibold text-foreground">Celular:</span> {result.companyInfo.phone}</span>
+              )}
+              <span><span className="font-semibold text-foreground">Sector:</span> {result.companyInfo.sector}</span>
+            </div>
+          </div>
         </div>
 
         {/* Acciones principales - ARRIBA para visibilidad inmediata */}
